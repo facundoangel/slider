@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      .contenedor {
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        & .contenedor-video {
+          text-align: center;
+          min-height: 400px;
+
+          & .video {
+            width: 50%;
+          }
+        }
+
+        & .contenedor-botonera {
+          width: 70%;
+          height: 70px;
+
+          & .botonera {
+            position: relative;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+
+            & .slider-item {
+              list-style: none;
+              position: relative;
+              /*margin: 0;*/
+
+              & .boton-item {
+                background-color: #fff;
+                cursor: pointer;
+                border: none;
+                position: relative;
+                border-radius: 50%;
+                padding: 12px;
+                border: 1px solid rgb(223, 221, 221);
+
+                & .leyenda-item {
+                  position: absolute;
+                  color: rgb(128, 127, 127);
+                  text-transform: uppercase;
+                  font-size: 0.6rem;
+                  font-weight: 700;
+                  top: 110%;
+                  left: 50%;
+                  transform: translateX(-50%);
+                }
+              }
+            }
+            &::after {
+              content: "";
+              z-index: -1;
+              position: absolute;
+              top: 50%;
+              height: 1px;
+              width: 100%;
+              background-color: rgb(223, 221, 221);
+            }
+          }
+        }
+      }
+
+      .activo {
+        background-color: #584ee2 !important;
+        color: #fff;
+
+        & .leyenda-item {
+          color: #584ee2 !important;
+        }
+      }
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      /*==========================================RESPONSIVE===============================================*/
+
+      @media screen and (max-width: 759px) {
+        .contenedor {
+          & .contenedor-video {
+            padding: 0;
+            min-height: 200px;
+            & .video {
+              width: 80%;
+            }
+          }
+
+          & .contenedor-botonera {
+            overflow-x: auto;
+            margin-top: 40px;
+            width: 100%;
+            & .botonera {
+              margin: 0 20px;
+              width: 300% !important;
+            }
+          }
+        }
+      }
+
+      @media screen and (max-width: 800px) and (min-width: 760px) {
+        .contenedor {
+          & .contenedor-video {
+            min-height: 500px;
+            & .video {
+              width: 100%;
+            }
+          }
+
+          & .contenedor-botonera {
+            width: 100%;
+            & .botonera {
+              margin: 0;
+            }
+          }
+        }
+      }
+
+      @media screen and (max-width: 1100px) and (min-width: 801px) {
+        .contenedor {
+          & .contenedor-video {
+            min-height: 400px;
+            & .video {
+              width: 70%;
+            }
+          }
+        }
+      }
+    </style>
+    <div class="contenedor">
+      <div id="contenedor-video" class="contenedor-video">
+        <video
+          id="video-slider"
+          muted
+          autoplay
+          class="video"
+          loop="loop"
+          src="/videos/video1.mp4"
+        ></video>
+      </div>
+
+      <div class="contenedor-botonera">
+        <ul class="botonera">
+          <li class="slider-item">
+            <button class="boton-item activo" data-video="/videos/video1.mp4">
+              00<span class="leyenda-item">leyenda</span>
+            </button>
+          </li>
+          <li class="slider-item">
+            <button class="boton-item" data-video="/videos/video2.mp4">
+              02<span class="leyenda-item">leyenda</span>
+            </button>
+          </li>
+          <li class="slider-item">
+            <button class="boton-item" data-video="/videos/video3.mp4">
+              03<span class="leyenda-item">leyenda</span>
+            </button>
+          </li>
+          <li class="slider-item">
+            <button class="boton-item" data-video="/videos/video4.mp4">
+              04<span class="leyenda-item">leyenda</span>
+            </button>
+          </li>
+          <li class="slider-item">
+            <button class="boton-item" data-video="/videos/video1.mp4">
+              05<span class="leyenda-item">leyenda</span>
+            </button>
+          </li>
+          <li class="slider-item">
+            <button class="boton-item" data-video="/videos/video2.mp4">
+              06<span class="leyenda-item">leyenda</span>
+            </button>
+          </li>
+          <li class="slider-item">
+            <button class="boton-item" data-video="/videos/video3.mp4">
+              07<span class="leyenda-item">leyenda</span>
+            </button>
+          </li>
+          <li class="slider-item">
+            <button class="boton-item" data-video="/videos/video4.mp4">
+              08<span class="leyenda-item">leyenda</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <script>
+      let video = document.getElementById("video-slider");
+
+      const inicializarEstado = (texto) => {
+        let localizadoPosicion = false;
+
+        document.querySelectorAll(".boton-item").forEach((boton) => {
+          if (!localizadoPosicion && boton.innerText != texto) {
+            boton.classList.add("activo");
+          } else if (localizadoPosicion && boton.innerText != texto) {
+            boton.classList.remove("activo");
+          } else if (boton.innerText == texto) {
+            localizadoPosicion = true;
+          }
+        });
+      };
+
+      document.querySelectorAll(".boton-item").forEach((boton) => {
+        boton.addEventListener("click", (e) => {
+          video.src = boton.dataset.video;
+          if (video.muted) video.muted = false;
+          video.play();
+
+          inicializarEstado(e.target.innerText);
+          boton.classList.add("activo");
+        });
+      });
+
+      window.addEventListener("keydown", (e) => {
+        const botonesActivos = document.querySelectorAll(".activo");
+
+        const ultimoBoton = botonesActivos[botonesActivos.length - 1];
+
+        const siguienteElem =
+          ultimoBoton.parentElement.nextElementSibling?.children[0];
+        const anteriorElem =
+          ultimoBoton.parentElement.previousElementSibling?.children[0];
+
+        if (e.key == "ArrowRight" && siguienteElem) siguienteElem.click();
+        else if (e.key == "ArrowLeft" && anteriorElem) anteriorElem.click();
+      });
+    </script>
+  </body>
+</html>
