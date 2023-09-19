@@ -149,7 +149,7 @@
           autoplay
           class="video"
           loop="loop"
-          src="/videos/video1.mp4"
+          src="./videos/video1.mp4"
         ></video>
       </div>
 
@@ -217,7 +217,7 @@
 
       document.querySelectorAll(".boton-item").forEach((boton) => {
         boton.addEventListener("click", (e) => {
-          video.src = boton.dataset.video;
+          video.src = "." + boton.dataset.video;
           if (video.muted) video.muted = false;
           video.play();
 
